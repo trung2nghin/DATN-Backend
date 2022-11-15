@@ -6,13 +6,14 @@ const stripeController = {
   // STRIPE PAYMENT
   stripePayment: async (req, res) => {
     try {
-      const { name } = req.body;
+      const data = req.body;
+      console.log(data);
       // Create a PaymentIntent with the order amount and currency
       const paymentIntent = await stripe.paymentIntents.create({
-        amount: Math.round(25 * 100),
+        amount: 100 * data.totalPrice,
         currency: 'usd',
         payment_method_types: ['card'],
-        metadata: { name },
+        metadata: data,
       });
       const clientSecret = paymentIntent.client_secret;
       res.status(200).json({ message: 'Payment initiated', clientSecret });

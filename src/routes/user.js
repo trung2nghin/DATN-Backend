@@ -10,7 +10,7 @@ router.get('/', middlewareController.verifyToken, userController.getAllUser);
 // GET USER
 router.get(
   '/find/:id',
-  middlewareController.verifyTokenAndAdminAuth,
+  middlewareController.verifyToken,
   userController.getUser
 );
 
