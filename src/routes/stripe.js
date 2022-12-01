@@ -7,7 +7,7 @@ const middlewareController = require('../app/controllers/middlewareController');
 
 router.post(
   '/',
-//   middlewareController.verifyToken,
+  middlewareController.verifyToken,
   stripeController.stripePayment
 );
 

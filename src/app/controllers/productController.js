@@ -64,24 +64,19 @@ const productController = {
   // UPDATE FAVORITE PRODUCT
   setFavoriteProduct: async (req, res) => {
     try {
-      const setFavoriteProduct = await Product.findByIdAndUpdate(
-        req.params.id,
-        {
-          $push: { favorite: req.body.favorite },
-        },
-        { new: true }
-      );
-      // const filterFavorite = setFavoriteProduct.favorite.filter(
-      //   (item) => item === req.body.favorite
-      // );
-      // if (filterFavorite.length > 1) {
-      //   var sortFavorite = setFavoriteProduct.favorite.filter(
-      //     (item) => item !== req.body.favorite
-      //   );
-      // }
-      // let newFavorite = { ...setFavoriteProduct };
-      // console.log('newFavorite', newFavorite);
-      await res.status(200).json(setFavoriteProduct);
+      let setFavoriteProduct = [];
+      const product = await Product.findById(req.params.id);
+      if (product.favorite.includes(req.body.userId)) {
+        setFavoriteProduct = product.favorite.filter(
+          (val) => val !== req.body.userId
+        );
+        product.favorite = [...setFavoriteProduct];
+      } else {
+        setFavoriteProduct.push(req.body.userId);
+        product.favorite = [...product.favorite, ...setFavoriteProduct];
+      }
+      await product.save();
+      await res.status(200).json(product);
     } catch (err) {
       res.status(500).json(err);
     }
