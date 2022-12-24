@@ -12,6 +12,6 @@ router.post(
 );
 
 // GET NEWS
-router.get('/', middlewareController.verifyToken, newsController.getAllNews);
+router.get('/', newsController.getAllNews);
 
 module.exports = router;

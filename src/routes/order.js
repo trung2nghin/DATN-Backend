@@ -36,7 +36,7 @@ router.delete(
 );
 
 // GET MONTLY INCOME
-router.put(
+router.get(
   '/income',
   middlewareController.verifyTokenAndAdminAuth,
   orderController.monthlyIncome
