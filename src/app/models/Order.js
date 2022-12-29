@@ -4,10 +4,10 @@ const Schema = mongoose.Schema
 
 const Order = new Schema(
   {
-    user: { type: String, required: true, ref: 'User' },
+    userId: { type: String, ref: 'User' },
     products: [
       {
-        product: {
+        productID: {
           type: Schema.Types.ObjectId,
           ref: 'Product',
         },

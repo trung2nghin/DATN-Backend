@@ -16,6 +16,11 @@ const orderController = {
   getOrder: async (req, res) => {
     try {
       const orders = await Order.find({ userId: req.params.userId })
+        .populate('userId')
+        .populate({
+          path: 'products',
+          populate: { path: 'productID' },
+        })
       res.status(200).json(orders)
     } catch (err) {
       res.status(500).json(err)
@@ -26,10 +31,10 @@ const orderController = {
   getAll: async (req, res) => {
     try {
       const orders = await Order.find()
-        .populate('user')
+        .populate('userId')
         .populate({
           path: 'products',
-          populate: { path: 'product' },
+          populate: { path: 'productID' },
         })
       res.status(200).json(orders)
     } catch (err) {
