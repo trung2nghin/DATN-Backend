@@ -19,7 +19,7 @@ const productController = {
     try {
       let products;
       if (query) {
-        products = await Product.find().sort({ createdAt: -1 }).limit(5);
+        products = await Product.find().sort({ createdAt: -1 }).limit(8);
       } else if (queryCategory) {
         products = await Product.find({
           categories: {
