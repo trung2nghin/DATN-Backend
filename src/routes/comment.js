@@ -25,6 +25,11 @@ router.get(
   commentController.getComment
 );
 
+router.get(
+  '/findComment/:commentId',
+  middlewareController.verifyToken,
+  commentController.getDetail
+)
 // UPDATE COMMENT
 router.put(
   '/:id',
