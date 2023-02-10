@@ -118,6 +118,8 @@ const authController = {
     )
     res.status(200).json('Logged out')
   },
+
+  // FORGOT_PASSWORD
   forgotPassword: async (req, res) => {
     const { username, email } = req.body
 

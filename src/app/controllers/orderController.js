@@ -1,14 +1,14 @@
-const Order = require('../models/Order')
+const Order = require('../models/Order');
 
 const orderController = {
   // CREATE ORDER
   createOrder: async (req, res) => {
-    const newOrder = new Order(req.body)
+    const newOrder = new Order(req.body);
     try {
-      const savedOrder = await newOrder.save()
-      res.status(200).json(savedOrder)
+      const savedOrder = await newOrder.save();
+      res.status(200).json(savedOrder);
     } catch (err) {
-      res.status(500).json(err)
+      res.status(500).json(err);
     }
   },
 
@@ -20,10 +20,10 @@ const orderController = {
         .populate({
           path: 'products',
           populate: { path: 'productID' },
-        })
-      res.status(200).json(orders)
+        });
+      res.status(200).json(orders);
     } catch (err) {
-      res.status(500).json(err)
+      res.status(500).json(err);
     }
   },
 
@@ -35,11 +35,11 @@ const orderController = {
         .populate({
           path: 'products',
           populate: { path: 'productID' },
-        })
-      res.status(200).json(orders)
+        });
+      res.status(200).json(orders);
     } catch (err) {
-      console.log(err)
-      res.status(500).json(err)
+      console.log(err);
+      res.status(500).json(err);
     }
   },
 
@@ -52,33 +52,34 @@ const orderController = {
           $set: req.body,
         },
         { new: true }
-      )
-      res.status(200).json(updatedOrder)
+      );
+      res.status(200).json(updatedOrder);
     } catch (err) {
-      res.status(500).json(err)
+      res.status(500).json(err);
     }
   },
 
   // DELETE ORDER
   deleteOrder: async (req, res) => {
     try {
-      await Order.findByIdAndDelete(req.params.id)
-      res.status(200).json('Order has been deleted')
+      await Order.findByIdAndDelete(req.params.id);
+      res.status(200).json('Order has been deleted');
     } catch (err) {
-      res.status(500).json(err)
+      res.status(500).json(err);
     }
   },
 
   //   MONTLY INCOME
   monthlyIncome: async (req, res) => {
-    const date = new Date()
-    const lastMonth = new Date(date.setMonth(date.getMonth() - 1))
-    const previousMonth = new Date(
-      new Date().setMonth(lastMonth.getMonth() - 1)
-    )
+    const date = new Date();
+    const lastYear = new Date(date.setFullYear(date.getFullYear() - 1));
+    // const previousMonth = new Date(
+    //   new Date().setMonth(lastMonth.getMonth() - 1)
+    // );
+    // console.log('previousMonth', lastMonth, previousMonth);
     try {
       const income = await Order.aggregate([
-        { $match: { createdAt: { $gte: previousMonth } } },
+        { $match: { createdAt: { $gte: lastYear } } },
         {
           $project: {
             month: { $month: '$createdAt' },
@@ -91,12 +92,12 @@ const orderController = {
             total: { $sum: '$sales' },
           },
         },
-      ])
-      res.status(200).json(income)
+      ]);
+      res.status(200).json(income);
     } catch (err) {
-      res.status(500).json(err)
+      res.status(500).json(err);
     }
   },
-}
+};
 
-module.exports = orderController
+module.exports = orderController;
